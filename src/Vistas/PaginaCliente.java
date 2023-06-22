@@ -1,8 +1,20 @@
 package Vistas;
 
+import Conexion.Conexion;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class PaginaCliente extends javax.swing.JFrame {
+    
+    Conexion con = new Conexion();
+    Connection cn;
+    
+    // Variables de consulta
+    Statement st;
+    ResultSet rs;
     
     private String dato;
 
@@ -25,7 +37,8 @@ public class PaginaCliente extends javax.swing.JFrame {
     
     public void obtenerNombres (String dato) {
         this.dato = dato;
-        txtNombre.setText(dato);
+        txtCedula.setText(dato);
+        txtSaldoActionPerformed(null);
     }
 
     /**
@@ -40,15 +53,16 @@ public class PaginaCliente extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtSaldo = new javax.swing.JTextField();
         btnFavoritos = new javax.swing.JButton();
         btnRetirar = new javax.swing.JButton();
         btnTransferir = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        txtNombre = new javax.swing.JLabel();
+        txtCedula = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
+        txtSaldo = new javax.swing.JTextField();
+        btnConsignar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -63,20 +77,13 @@ public class PaginaCliente extends javax.swing.JFrame {
         jLabel3.setText("Tu saldo actual es:");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 320, -1, -1));
 
-        txtSaldo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSaldoActionPerformed(evt);
-            }
-        });
-        jPanel1.add(txtSaldo, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 310, 190, 40));
-
-        btnFavoritos.setText("Favoritos ");
+        btnFavoritos.setText("Ver Favoritos ");
         btnFavoritos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnFavoritosActionPerformed(evt);
             }
         });
-        jPanel1.add(btnFavoritos, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 410, 120, 120));
+        jPanel1.add(btnFavoritos, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 560, 160, 90));
 
         btnRetirar.setText("Retirar");
         btnRetirar.addActionListener(new java.awt.event.ActionListener() {
@@ -98,10 +105,10 @@ public class PaginaCliente extends javax.swing.JFrame {
         jLabel4.setText("¿Que deseas hacer?");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 380, 180, -1));
 
-        txtNombre.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
-        txtNombre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        txtNombre.setText("cedula");
-        jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 80, 30));
+        txtCedula.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        txtCedula.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txtCedula.setText("cedula");
+        jPanel1.add(txtCedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 130, 30));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         jLabel2.setText("Tu cuenta es:");
@@ -113,10 +120,26 @@ public class PaginaCliente extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 560, 280, 90));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 560, 210, 90));
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/WhatsApp Image 2023-06-18 at 11.18.32 AM.jpeg"))); // NOI18N
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 450, 290));
+
+        txtSaldo.setText("0");
+        txtSaldo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSaldoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(txtSaldo, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 320, 150, 30));
+
+        btnConsignar.setText("Consignar");
+        btnConsignar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsignarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnConsignar, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 410, 120, 120));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -126,33 +149,93 @@ public class PaginaCliente extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 687, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 681, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtSaldoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSaldoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSaldoActionPerformed
-
     private void btnFavoritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFavoritosActionPerformed
-        // TODO add your handling code here:
+
+        ListaFavoritos listaFavoritos = new ListaFavoritos();
+        listaFavoritos.setVisible(true);
+        
+        this.dispose();
+
+
     }//GEN-LAST:event_btnFavoritosActionPerformed
 
     private void btnRetirarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetirarActionPerformed
+
+                Retirar retirar = new Retirar(); 
+                int saldo = Integer.parseInt(txtSaldo.getText());
+                String cedula = txtCedula.getText();
+                retirar.obtenerCedula(cedula);
+                retirar.setSaldo(saldo);                
+                retirar.setVisible(true);
+                
+                this.dispose();
+
+                
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRetirarActionPerformed
 
     private void btnTransferirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransferirActionPerformed
-        // TODO add your handling code here:
+
+                Transferir transferir = new Transferir(); 
+                int saldo = Integer.parseInt(txtSaldo.getText());
+                String cedula = txtCedula.getText();
+                transferir.obtenerCedula(cedula);
+                transferir.setSaldo(saldo);                
+                transferir.setVisible(true);
+                
+                this.dispose();
+
+
     }//GEN-LAST:event_btnTransferirActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtSaldoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSaldoActionPerformed
+      
+
+        try {
+            String cedula = txtCedula.getText();
+            String consulta = "SELECT saldo FROM cuenta WHERE cedula = '" + cedula + "';";
+
+            cn = con.getConnection();
+            st = cn.createStatement();
+            rs = st.executeQuery(consulta);
+
+            if (rs.next()) {
+                String saldo = rs.getString("saldo");
+                txtSaldo.setText(saldo);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "ERROR: " + e.toString());
+        }
+    
+               
+       
+
+    }//GEN-LAST:event_txtSaldoActionPerformed
+
+    private void btnConsignarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsignarActionPerformed
+
+                Consignar consignar = new Consignar(); 
+                int saldo = Integer.parseInt(txtSaldo.getText());
+                String cedula = txtCedula.getText();
+                consignar.obtenerCedula(cedula);
+                consignar.setSaldo(saldo);                
+                consignar.setVisible(true);
+                
+               this.dispose();
+
+
+    }//GEN-LAST:event_btnConsignarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -175,6 +258,7 @@ public class PaginaCliente extends javax.swing.JFrame {
       
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnConsignar;
     private javax.swing.JButton btnFavoritos;
     private javax.swing.JButton btnRetirar;
     private javax.swing.JButton btnTransferir;
@@ -185,7 +269,7 @@ public class PaginaCliente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel txtNombre;
+    private javax.swing.JLabel txtCedula;
     private javax.swing.JTextField txtSaldo;
     // End of variables declaration//GEN-END:variables
 }

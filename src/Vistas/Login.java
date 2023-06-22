@@ -105,21 +105,48 @@ public class Login extends javax.swing.JFrame {
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
     
+            try {
+             String cedulaAdmin = "123456789";
+             String contrasenaAdmin = "admin123";
         
+                     
+            String consultaAdmin = "select * from persona where cedula='"+cedulaAdmin+"' and contrasena='"+contrasenaAdmin+"'";
+
+             
+            cn = con.getConnection();
+            st = cn.createStatement();
+            rs = st.executeQuery(consultaAdmin);
+   
+            if (rs.next()) {
+                JOptionPane.showMessageDialog(this, "EL ADMIN EXISTE");                
+                VerLista verlista = new VerLista();
+               
+                verlista.setVisible(true);
+                
+            }else{
+                JOptionPane.showMessageDialog(this, "EL USUARIO NO EXISTE");
+            }
+     
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "ERROR: "+ e.toString());
+        }
         
         try {
              String cedula=txtCedula.getText();
              String contrasena=String.valueOf(txtContrasena.getPassword());
+             String cedulaAdmin = "123456789";
+             String contrasenaAdmin = "admin123";
         
                      String consulta = "select * from persona where cedula='"+cedula+"' and contrasena='"+contrasena+"'";
+                     String consultaAdmin = "select * from persona where cedula='"+cedulaAdmin+"' and contrasena='"+contrasenaAdmin+"'";
 
              
             cn = con.getConnection();
             st = cn.createStatement();
             rs = st.executeQuery(consulta);
+   
             if (rs.next()) {
-                JOptionPane.showMessageDialog(this, "EL USUARIO EXISTE");
-                
+                JOptionPane.showMessageDialog(this, "EL USUARIO EXISTE");                
                 PaginaCliente paginaCliente = new PaginaCliente();
                 paginaCliente.obtenerNombres(cedula);
                 paginaCliente.setVisible(true);
